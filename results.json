@@ -1,0 +1,39 @@
+{
+  "best_model": "Model_3_MobileNetV2",
+  "best_test_acc": 0.0578,
+  "results": {
+    "Model_1_MLP": {
+      "test_acc": 0.0001,
+      "test_loss": 9.48,
+      "final_train_acc": 0.0,
+      "final_val_acc": 0.0,
+      "epochs_ran": 2,
+      "description": "MLP baseline (Flatten + Dense layers)"
+    },
+    "Model_2_Scratch_CNN": {
+      "test_acc": 0.0001,
+      "test_loss": 9.48,
+      "final_train_acc": 0.0,
+      "final_val_acc": 0.0,
+      "epochs_ran": 4,
+      "description": "From-scratch CNN; failed to learn 13065-way task in short runs"
+    },
+    "Model_3_MobileNetV2": {
+      "test_acc": 0.0578,
+      "test_loss": 6.42,
+      "final_train_acc": 0.0998,
+      "final_val_acc": 0.0603,
+      "epochs_ran": 8,
+      "description": "ImageNet-pretrained MobileNetV2 + Dense(13065)"
+    }
+  },
+  "diagnostic": {
+    "100_class_scratch_cnn_test_acc": 0.483,
+    "note": "Same pipeline on 100 classes reached 48.3%, proving labels/images are correct."
+  },
+  "num_classes": 13065,
+  "img_size": 64,
+  "train_originals_per_class": 40,
+  "augmentation": ["RandomRotation", "RandomZoom", "RandomTranslation"],
+  "dataset": "https://github.com/chenkenanalytic/handwritting_data_all"
+}
