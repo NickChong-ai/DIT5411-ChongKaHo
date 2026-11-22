@@ -72,7 +72,7 @@ Baselines on the full **13,065**-way task were weak without transfer learning + 
 
 Main notebook (in this repo root):
 
-- `DIT5411_ChongKaHo_Submission.ipynb`
+- `DIT5411_Chong_Ka_Ho.ipynb`
 
 1. Open the notebook in Google Colab.  
 2. `Runtime → Change runtime type → GPU`.  
@@ -96,7 +96,7 @@ Model_3_MobileNetV2 (fine-tuned):    Test = 0.4902   ← Best
 
 ```text
 DIT5411-ChongKaHo/
-├── DIT5411_ChongKaHo_Submission.ipynb
+├── DIT5411_Chong_Ka_Ho.ipynb
 ├── README.md
 ├── requirements.txt
 └── results.json
