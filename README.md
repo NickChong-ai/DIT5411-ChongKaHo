@@ -70,24 +70,15 @@ Baselines on the full **13,065**-way task were weak without transfer learning + 
 
 ## How to run
 
-Recommended all-in-one notebook (full pipeline + fine-tune):
+Main notebook (in this repo root):
 
-- [`notebooks/DIT5411_Full_Plus_FineTune.ipynb`](notebooks/DIT5411_Full_Plus_FineTune.ipynb)
-
-Also available:
-
-- [`notebooks/DIT5411_ChongKaHo_Submission.ipynb`](notebooks/DIT5411_ChongKaHo_Submission.ipynb) — baseline report notebook  
-- `DIT5411_Full_Plus_FineTune.ipynb` in Downloads  
+- `DIT5411_ChongKaHo_Submission.ipynb`
 
 1. Open the notebook in Google Colab.  
 2. `Runtime → Change runtime type → GPU`.  
-3. Run Parts 1–7 for setup / recorded baselines.  
-4. Run Part 8 to reproduce fine-tuning (needs GPU; longer runtime).  
+3. Run cells in order.  
 
-Recorded metrics:
-
-- [`outputs/results.json`](outputs/results.json)  
-- [`outputs/results_finetune.json`](outputs/results_finetune.json)
+Recorded metrics: `results.json`
 
 ## Results summary
 
@@ -105,16 +96,10 @@ Model_3_MobileNetV2 (fine-tuned):    Test = 0.4902   ← Best
 
 ```text
 DIT5411-ChongKaHo/
-├── notebooks/
-│   ├── DIT5411_Full_Plus_FineTune.ipynb
-│   └── DIT5411_ChongKaHo_Submission.ipynb
-├── outputs/
-│   ├── results.json
-│   └── results_finetune.json
-├── src/
-├── scripts/
+├── DIT5411_ChongKaHo_Submission.ipynb
+├── README.md
 ├── requirements.txt
-└── README.md
+└── results.json
 ```
 
 ## References
