@@ -10,8 +10,8 @@ THEi **DIT5411 Machine Learning** assignment: Traditional Chinese handwritten ch
 | Input size | 64×64 grayscale (RGB for transfer learning) |
 | Train split | first **40** samples / character |
 | Test split | remaining samples / character |
-| Best model | **Model_3_MobileNetV2** |
-| Best test accuracy | **0.0578 (5.78%)** |
+| Best model | **Model_3_MobileNetV2 (fine-tuned)** |
+| Best test accuracy | **0.4902 (49.02%)** |
 
 ## Dataset
 
@@ -50,50 +50,68 @@ All classification heads end with **Dense(13065, softmax)**.
 
 | Model | Architecture (summary) | Test Acc |
 | --- | --- | ---: |
-| **Model_1_MLP** | Flatten → Dense(1024) → Dense(512) → Softmax(13065) | 0.0001 |
-| **Model_2_Scratch_CNN** | 3× Conv+MaxPool (32/64/128) → Dense(512) → Softmax(13065) | 0.0001 |
-| **Model_3_MobileNetV2** | ImageNet MobileNetV2 (frozen) → GAP → Dropout → Softmax(13065) | **0.0578** |
+| Model_1_MLP | Flatten → Dense(1024) → Dense(512) → Softmax(13065) | 0.0001 |
+| Model_2_Scratch_CNN | 3× Conv+MaxPool (32/64/128) → Dense(512) → Softmax(13065) | 0.0001 |
+| Model_3_MobileNetV2 (frozen) | ImageNet MobileNetV2 (frozen) → GAP → Dropout → Softmax(13065) | 0.0578 |
+| Model_3_MobileNetV2 (phase 1) | Frozen backbone, head-only training | 0.0315 |
+| **Model_3_MobileNetV2 (fine-tuned)** | Unfreeze last ~30 layers + small LR | **0.4902** |
 
-Training details: Adam optimizer, `sparse_categorical_crossentropy`, EarlyStopping on `val_loss` where applicable.
+Training details: Adam optimizer, `sparse_categorical_crossentropy`, EarlyStopping / ReduceLROnPlateau on `val_loss`.
+
+**Fine-tune strategy**
+
+1. **Phase 1:** freeze MobileNetV2 backbone, train classification head  
+2. **Phase 2:** unfreeze the last ~30 backbone layers and continue with a lower learning rate (`1e-4`)
 
 ### 4. Diagnostic check
 
 A from-scratch CNN trained on only **100 classes** reached **test accuracy = 0.483**, which confirms that the data loading / labeling pipeline is correct.  
-The very low from-scratch accuracy on the full **13,065**-way task is due to task difficulty and limited GPU time, not a broken dataset.
+Baselines on the full **13,065**-way task were weak without transfer learning + fine-tuning.
 
 ## How to run
 
-Main submission notebook:
+Recommended all-in-one notebook (full pipeline + fine-tune):
 
-- [`notebooks/DIT5411_ChongKaHo_Submission.ipynb`](notebooks/DIT5411_ChongKaHo_Submission.ipynb)
+- [`notebooks/DIT5411_Full_Plus_FineTune.ipynb`](notebooks/DIT5411_Full_Plus_FineTune.ipynb)
 
-Also available in Downloads as `DIT5411_ChongKaHo_Submission.ipynb`.
+Also available:
+
+- [`notebooks/DIT5411_ChongKaHo_Submission.ipynb`](notebooks/DIT5411_ChongKaHo_Submission.ipynb) — baseline report notebook  
+- `DIT5411_Full_Plus_FineTune.ipynb` in Downloads  
 
 1. Open the notebook in Google Colab.  
 2. `Runtime → Change runtime type → GPU`.  
-3. Run parts in order.  
-4. Part 6A writes the recorded results used for this report (no long re-training required).  
-5. Part 6B is optional if you want to reproduce MobileNet training.
+3. Run Parts 1–7 for setup / recorded baselines.  
+4. Run Part 8 to reproduce fine-tuning (needs GPU; longer runtime).  
 
-Recorded metrics are also stored in [`outputs/results.json`](outputs/results.json).
+Recorded metrics:
+
+- [`outputs/results.json`](outputs/results.json)  
+- [`outputs/results_finetune.json`](outputs/results_finetune.json)
 
 ## Results summary
 
 ```text
-Model_1_MLP:            Test = 0.0001
-Model_2_Scratch_CNN:    Test = 0.0001
-Model_3_MobileNetV2:    Test = 0.0578   ← Best
+Model_1_MLP:                         Test = 0.0001
+Model_2_Scratch_CNN:                 Test = 0.0001
+Model_3_MobileNetV2 (frozen):        Test = 0.0578
+Model_3_MobileNetV2 (phase 1):       Test = 0.0315
+Model_3_MobileNetV2 (fine-tuned):    Test = 0.4902   ← Best
 ```
 
-**Best model:** Model_3_MobileNetV2 (Test Accuracy = **0.0578**)
+**Best model:** Model_3_MobileNetV2 fine-tuned (Test Accuracy = **0.4902**)
 
 ## Project layout
 
 ```text
 DIT5411-ChongKaHo/
-├── notebooks/DIT5411_ChongKaHo_Submission.ipynb
-├── outputs/results.json
-├── src/                    # helper modules used during development
+├── notebooks/
+│   ├── DIT5411_Full_Plus_FineTune.ipynb
+│   └── DIT5411_ChongKaHo_Submission.ipynb
+├── outputs/
+│   ├── results.json
+│   └── results_finetune.json
+├── src/
 ├── scripts/
 ├── requirements.txt
 └── README.md

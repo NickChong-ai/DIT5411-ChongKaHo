@@ -1,6 +1,6 @@
 {
-  "best_model": "Model_3_MobileNetV2",
-  "best_test_acc": 0.0578,
+  "best_model": "Model_3_MobileNetV2_finetuned",
+  "best_test_acc": 0.4902,
   "results": {
     "Model_1_MLP": {
       "test_acc": 0.0001,
@@ -18,13 +18,21 @@
       "epochs_ran": 4,
       "description": "From-scratch CNN; failed to learn 13065-way task in short runs"
     },
-    "Model_3_MobileNetV2": {
+    "Model_3_MobileNetV2_frozen": {
       "test_acc": 0.0578,
       "test_loss": 6.42,
       "final_train_acc": 0.0998,
       "final_val_acc": 0.0603,
       "epochs_ran": 8,
-      "description": "ImageNet-pretrained MobileNetV2 + Dense(13065)"
+      "description": "ImageNet-pretrained MobileNetV2 frozen + Dense(13065)"
+    },
+    "Model_3_MobileNetV2_phase1": {
+      "test_acc": 0.0315,
+      "description": "Fine-tune phase 1: frozen backbone, head-only"
+    },
+    "Model_3_MobileNetV2_finetuned": {
+      "test_acc": 0.4902,
+      "description": "Fine-tune phase 2: unfreeze last ~30 layers, Adam 1e-4"
     }
   },
   "diagnostic": {
